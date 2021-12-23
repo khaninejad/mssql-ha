@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mssql-primary-deployment
+  labels:
+    app: primary
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mssql-primary
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mssql-primary
+        type: primary
+    spec:
+      # Uncomment below if you have certain conditions on which zone or worker should run.
+      # affinity:
+      #   nodeAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #       nodeSelectorTerms:
+      #       - matchExpressions:
+      #         - key: type
+      #           operator: In
+      #           values:
+      #           - worker 
+      #         - key: zone
+      #           operator: In
+      #           values:
+      #           - us-west 
+      hostname: mssql-primary
+      terminationGracePeriodSeconds: 10
+      securityContext:
+        fsGroup: 1000
+      volumes:
+        - name: task-pv-storage-primary
+          persistentVolumeClaim:
+            claimName: mssql-pv-claim-primary
+      containers:
+      - name:  mssql-primary
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        env:
+        - name:  MSSQL_PID
+          value:  "Developer"
+        - name:  ACCEPT_EULA
+          value: "Y"
+        - name:  MSSQL_ENABLE_HADR
+          value: "1"
+        - name:  MSSQL_AGENT_ENABLED
+          value: "true"
+        - name:  MSSQL_SA_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name:  mssql
+              key: SA_PASSWORD
+        resources:
+          limits:
+            memory: 3G
+        volumeMounts:
+          - name:  task-pv-storage-primary
+            mountPath:  /var/opt/mssql
+    hostname: mssql-primary
