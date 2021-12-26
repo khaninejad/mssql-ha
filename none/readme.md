@@ -38,7 +38,7 @@ Deploy services:
 
 Connect to the primary node using SSMS or other SQL  management tools
 
-Execute [this](/6_sql_primary.sql) file in the primary node. after this step, availability rules will be created along with database and routing.
+Execute [this](https://github.com/khaninejad/mssql-ha/blob/main/none/6_sql_primary.sql) file in the primary node. after this step, availability rules will be created along with database and routing.
 
 Copy primary node SSL certificate to secondary nodes:
 
@@ -46,6 +46,6 @@ Copy primary node SSL certificate to secondary nodes:
 
 ``` bash 7_copy_ssl.sh  ```
 
-Execute SQL  commands in each of the secondary nodes using [this](/8_sql_secondary.sql) file
+Execute SQL  commands in each of the secondary nodes using [this](https://github.com/khaninejad/mssql-ha/blob/main/none/8_sql_secondary.sql) file
 
 That's it. you're ready to test.
