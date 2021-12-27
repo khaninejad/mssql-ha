@@ -1,0 +1,47 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name:  mssql-primary
+spec:
+  selector:
+    app: mssql-primary
+  type:  LoadBalancer
+  ports:
+  - name:  sqlserver
+    port:  1433
+    targetPort:  1433
+  - name:  endpoint
+    port: 5022
+    targetPort: 5022
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name:  mssql-sec1
+spec:
+  selector:
+    app: mssql-sec1
+  type:  LoadBalancer
+  ports:
+  - name:  sqlserver
+    port:  1433
+    targetPort:  1433
+  - name:  endpoint
+    port: 5022
+    targetPort: 5022
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name:  mssql-sec2
+spec:
+  selector:
+    app: mssql-sec2
+  type:  LoadBalancer
+  ports:
+  - name:  sqlserver
+    port:  1433
+    targetPort:  1433
+  - name:  endpoint
+    port: 5022
+    targetPort: 5022
